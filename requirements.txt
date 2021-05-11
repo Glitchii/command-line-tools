@@ -1,0 +1,2 @@
+pyperclip       # Used in clyp
+pyinstaller     # Used to compile from py
