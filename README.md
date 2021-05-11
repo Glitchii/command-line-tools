@@ -3,7 +3,6 @@ Simple tools I made because I find myself to need them quite a lot.
 The scripts are in the scripts directory. You can compile them (recommended) by running `compile.sh` or run them straight with python.
 
 ## Tools
-<hr>
 
 ## PREP - Python  Regular Expression Print:
 Similar, and inspired by grep. I had some problems with grep. I used regex alot I find myself to use grep quite alot but along with some other issues, the regular expression was not quite advanced and so I made this issues.
