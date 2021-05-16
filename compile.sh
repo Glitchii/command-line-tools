@@ -1,6 +1,8 @@
+#!/bin/bash
+
 trap terminate INT
 function terminate() {
-    # Trapped so echo does not work on line 42 when incomplete.
+    # Trapped so echo does not work on line 45 when incomplete.
     echo -e "\e[31mNot compeleted\e[0m" && exit 1
 }
 
@@ -8,7 +10,8 @@ function terminate() {
 [ -d bin ] || mkdir bin
 
 bin="$(realpath bin)" && cd bin
-loc="/home/$USER/.local"
+# Compile to /usr/bin if ran with root permissions, otherwise /home/$USER/.local
+[ $(id -u) == 0 ] && loc="/usr" || loc="/home/$USER/.local"
 python="$(which python3)" # Assumming Python3 is installed.
 
 # Verify Python version 3 and above is installed and use that.
@@ -36,11 +39,11 @@ done
 # I'm not explaining this.
 mv dist/* ../temp && rm -rf ./* && mv ../temp/* . && rm -rf ../temp
 
-# Create /home/$USER/.local/bin if it does not exists.
+# Create user bin if it does not exists.
 [ -d $loc ] || mkdir -p $loc/bin
 
 cp ./* $loc/bin && echo -e "\n\e[32mCompiled to $loc/bin and left copies in $bin\e[0m"
 
-# Check if /home/$USER/.local/bin is in path, if not, give a warning to add it.
+# Check if user bin is in path, if not, give a warning to add it.
 [ -z "$(echo $PATH | grep -P :?$loc/bin/?)" ] &&
     echo -e "$loc/bin not in path, you might want to add it: \e[36mexport\e[0m PATH=\e[33m\"$(realpath $loc/bin):\e[0;35m\$PATH\e[33m\"\e[0m\n"

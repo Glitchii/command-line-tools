@@ -1,9 +1,10 @@
 from sys import stdin, stdout, stderr
 from argparse import ArgumentParser
-from re import finditer
+from re import finditer, match
 
 arg = ArgumentParser(description = "print lines that match (Python) regex patterns")
 arg.add_argument('-o', '--only-match', action="store_true", help='show only (nonempty) match')
+arg.add_argument('-a', '--all', action="store_true", help="include lines that don't match, but highlight matches")
 arg.add_argument('-c', '--color', '--colour', metavar="MARKER", help='highlight marker. Options: red, blue, green... Default: red', default='red')
 arg.add_argument('-t', '--text', help="match from text instead of file", default='')
 arg.add_argument('regex', help='regular expression')
@@ -33,16 +34,20 @@ colr, rst = highlights[colr], highlights['none']
 
 def start(data, tty = stdout.isatty()):
     for line in data:
-        if iterfind := finditer(args.regex, line):
-            output = None
-            for found in iterfind:
-                match = found.group()
-                if args.only_match:
-                    print(found.group().replace(match, colr+match+rst).rstrip('\n'))
-                else:
-                    output = found.string.replace(match, colr+match+rst if tty else match)
-            # rstrip because full lines have \n at the end
-            not args.only_match and output and print(output.rstrip('\n'))
+        if match(args.regex, line):
+            if iterfind := finditer(args.regex, line):
+                output = None
+                for found in iterfind:
+                    group = found.group()
+                    if args.only_match:
+                        print(found.group().replace(group, colr+group+rst).rstrip('\n'))
+                    else:
+                        output = found.string.replace(group, colr+group+rst if tty else group)
+                
+                # rstrip because full lines have \n at the end
+                not args.only_match and output and print(output.rstrip('\n'))
+        else:
+            args.all and print(line.rstrip('\n'))
 
 # If text is recieved from argument --text/-t or is piped
 # print(args.text or stdin)
