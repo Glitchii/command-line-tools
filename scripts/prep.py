@@ -40,7 +40,7 @@ def start(data, tty = stdout.isatty()):
                 for found in iterfind:
                     group = found.group()
                     if args.only_match:
-                        print(found.group().replace(group, colr+group+rst).rstrip('\n'))
+                        print(found.group().replace(group, colr+group+rst if tty else group).rstrip('\n'))
                     else:
                         output = found.string.replace(group, colr+group+rst if tty else group)
                 
@@ -69,4 +69,4 @@ stderr.close()
 
 # TODO:
 # prep: add replace functionality
-# prep: option to return only first and last matches
+# prep: option to return only first, last, or nth matches
