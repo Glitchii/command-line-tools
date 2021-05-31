@@ -10,16 +10,22 @@ Similar to, and inspired by grep. I find myself to use grep quite a lot, but alo
 
 
 ```sh
-$ prep '/home/\w+' -t "$PATH"       # Find /home/anyuser in path.
+$ prep '/home/\w+' -t "$PATH"       # find /home/anyuser in path.
 $ cat users.txt | prep "John Doe"   # prep data from pipe
 $ prep "John Doe" users.txt         # prep data from file
 $ prep -o "John Doe" users.txt      # print only the matches (not full lines)
 $ prep -a "\d" users.txt            # print all lines but with digits highlighted
+
+# Deleting
+$ prep '\d' -d -t 'ab2d'            # prints abd (removes all digits)
+$ prep '\d' file.txt -d             # prints content of file.txt with all digits removed
+
+# Substitution / replacing
+$ prep '\d' -t 'ab2d' -s 3          # prints ab3d (substitutes all digits with 3)
 ```
 
 ##  CLYP:
 Clyp allows to copy text or file content to clipboard, or pasting from clipboard
-
 
 ```sh
 # Copy file outpup to clipboard:
