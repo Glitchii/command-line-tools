@@ -45,8 +45,17 @@ highlights = {
 colr = str(args.color).lower()
 if colr not in highlights:
     hl = highlights
-    highlights = ", ".join([(f"{hl[c]}[bl]ack" if c == "black" else hl[c] + "[" + c[0] + "]" + c[1:]) + hl["n"]
-        for c in tuple(hl)[:-1] if len(c) > 2])
+    highlights = ", ".join(
+        (
+            f"{hl[c]}[bl]ack"
+            if c == "black"
+            else hl[c] + "[" + c[0] + "]" + c[1:]
+        )
+        + hl["n"]
+        for c in tuple(hl)[:-1]
+        if len(c) > 2
+    )
+
     errout(f'Incorrect highlight, choose from {highlights}, or [n]one\n')
 
 colr, rst = highlights[colr], highlights['none']
